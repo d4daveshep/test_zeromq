@@ -34,26 +34,26 @@ async def receiver() -> None:
             msg = await pull.recv_multipart()
             print('received', json.loads(msg[0].decode("utf-8")))
 
-
-async def sender() -> None:
-    """send a message every second"""
-    tic = time.time()
-    push = ctx.socket(zmq.PUSH)
-    push.bind(url)
-    while True:
-        time_elapsed = time.time() - tic
-        string_to_send = json.dumps({"time-elapsed": time_elapsed})
-        print(f"sending = {string_to_send}")
-        await push.send_multipart([string_to_send.encode("utf-8")])
-        await asyncio.sleep(1)
+#
+# async def sender() -> None:
+#     """send a message every second"""
+#     tic = time.time()
+#     push = ctx.socket(zmq.PUSH)
+#     push.bind(url)
+#     while True:
+#         time_elapsed = time.time() - tic
+#         string_to_send = json.dumps({"time-elapsed": time_elapsed})
+#         print(f"sending = {string_to_send}")
+#         await push.send_multipart([string_to_send.encode("utf-8")])
+#         await asyncio.sleep(1)
 
 
 asyncio.run(
     asyncio.wait(
         [
-            ping(),
+            # ping(),
             receiver(),
-            sender(),
+            # sender(),
         ]
     )
 )

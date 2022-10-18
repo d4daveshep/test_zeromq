@@ -17,22 +17,22 @@ ctx = Context.instance()
 async def ping() -> None:
     """print dots to indicate idleness"""
     while True:
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(0.1)
         print('.')
 
 
-async def receiver() -> None:
-    """receive messages with polling"""
-    pull = ctx.socket(zmq.PULL)
-    pull.connect(url)
-    poller = Poller()
-    poller.register(pull, zmq.POLLIN)
-    while True:
-        events = await poller.poll()
-        if pull in dict(events):
-            # print("recving", events)
-            msg = await pull.recv_multipart()
-            print('received', json.loads(msg[0].decode("utf-8")))
+# async def receiver() -> None:
+#     """receive messages with polling"""
+#     pull = ctx.socket(zmq.PULL)
+#     pull.connect(url)
+#     poller = Poller()
+#     poller.register(pull, zmq.POLLIN)
+#     while True:
+#         events = await poller.poll()
+#         if pull in dict(events):
+#             print("recving", events)
+#             msg = await pull.recv_multipart()
+#             print('recvd', json.loads(msg[0].decode("utf-8")))
 
 
 async def sender() -> None:
@@ -51,8 +51,8 @@ async def sender() -> None:
 asyncio.run(
     asyncio.wait(
         [
-            ping(),
-            receiver(),
+            # ping(),
+            # receiver(),
             sender(),
         ]
     )
