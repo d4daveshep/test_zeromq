@@ -4,6 +4,7 @@
 
 import asyncio
 import json
+import random
 import time
 
 import zmq
@@ -41,11 +42,16 @@ async def sender() -> None:
     push = ctx.socket(zmq.PUSH)
     push.bind(url)
     while True:
-        time_elapsed = time.time() - tic
-        string_to_send = json.dumps({"time-elapsed": time_elapsed})
+        # time_elapsed = time.time() - tic
+        # string_to_send = json.dumps({"time-elapsed": time_elapsed})
+
+        target_temp = random.randrange(10, 30)
+        string_to_send = json.dumps({"target-temp": target_temp})
+
+
         print(f"sending = {string_to_send}")
         await push.send_multipart([string_to_send.encode("utf-8")])
-        await asyncio.sleep(1)
+        await asyncio.sleep(20)
 
 
 asyncio.run(
